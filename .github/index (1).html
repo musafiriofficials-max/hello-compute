@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Musafiri AI Academy</title>
+  <meta name="description" content="Bilingual AI learning platform: Kinyarwanda & English. Learn AI, ML, Robotics, Python, Cybersecurity.">
+  <style>
+    :root{
+      --bg:#0f1224;
+      --card:#15193a;
+      --muted:#9aa3b2;
+      --text:#eef2ff;
+      --accent:#7c3aed;
+      --accent-2:#22d3ee;
+      --ok:#10b981;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"]{
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --muted:#4b5563;
+      --text:#0f172a;
+      --accent:#6d28d9;
+      --accent-2:#0891b2;
+      --ok:#059669;
+      --warn:#b45309;
+      --danger:#b91c1c;
+      --shadow: 0 8px 20px rgba(2,6,23,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 120% -20%, rgba(124,58,237,.25), transparent 60%),
+                  radial-gradient(1000px 800px at -20% 120%, rgba(34,211,238,.15), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent-2); text-decoration:none}
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .container{max-width:1120px; margin:0 auto; padding: 16px}
+    .nav{
+      display:flex; align-items:center; gap:12px; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .chip{font-size:12px; padding:2px 8px; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:white}
+    .actions{display:flex; gap:10px; align-items:center}
+    .btn, button{
+      border:0; cursor:pointer; border-radius:14px;
+      padding:10px 14px; font-weight:700; color:white;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: var(--shadow);
+    }
+    .btn.secondary{
+      background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.15);
+      box-shadow:none;
+    }
+    .grid{display:grid; gap:16px}
+    .hero{padding: 40px 16px 16px}
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius:20px; box-shadow: var(--shadow);
+    }
+    .hero-wrap{display:grid; grid-template-columns:1.2fr .8fr; gap:22px}
+    .card{background:var(--card); border-radius:20px; padding:18px; box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.08)}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.15); font-size:12px}
+    .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+    .kpi{background:var(--card); padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.08)}
+    .section{padding: 10px 16px 32px}
+    .list{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .course{padding:14px; border-radius:16px; background:var(--card); border:1px solid rgba(255,255,255,.08); display:flex; flex-direction:column; gap:8px}
+    .progress{height:8px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden}
+    .bar{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .lab{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    textarea, input{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.15);
+      background:rgba(0,0,0,.2); color:var(--text); outline:none;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .badge{display:inline-grid; place-items:center; width:28px; height:28px; border-radius:999px; background:rgba(16,185,129,.1); color:var(--ok); font-weight:800}
+    footer{padding: 30px 16px; text-align:center; color:var(--muted)}
+    .hidden{display:none !important}
+    @media (max-width: 900px){
+      .hero-wrap{grid-template-columns:1fr}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .list{grid-template-columns:1fr}
+      .lab{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="badge">AI</span>
+        <div>
+          <div style="font-size:18px">Musafiri AI Academy</div>
+          <div class="muted" style="font-size:12px">Learn • Build • Lead</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn secondary" id="langToggle">Kinyarwanda</button>
+        <button class="btn secondary" id="themeToggle" title="Toggle theme">🌙</button>
+        <a class="btn" href="#dashboard">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container glass">
+        <div class="hero-wrap" style="padding:18px">
+          <div>
+            <div class="pill" id="hero_pill">Bilingual • Fast • Practical</div>
+            <h1 id="hero_title" style="margin:10px 0 8px; font-size:34px; line-height:1.15">
+              Master AI, Robotics & Coding — in Kinyarwanda & English
+            </h1>
+            <p class="muted" id="hero_desc">
+              Step-by-step courses with interactive labs, progress tracking, and certificates. Admin-gated access for quality control.
+            </p>
+            <div style="display:flex; gap:10px; margin-top:12px">
+              <a class="btn" href="#courses" id="cta_start">Start Learning</a>
+              <a class="btn secondary" href="#lab" id="cta_lab">Open AI Lab</a>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:grid; gap:10px">
+              <div class="muted" id="join_title">Request Access (Admin approval)</div>
+              <input id="req_email" type="email" placeholder="Enter your email" />
+              <button class="btn" id="req_btn">Request Access</button>
+              <div class="muted" style="font-size:12px" id="join_hint">
+                Admin Email: <b>Musafiriofficials@gmail.com</b> • WhatsApp: <a href="https://wa.me/250737530409" target="_blank">+250737530409</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container" style="padding-bottom:16px">
+          <div class="kpis">
+            <div class="kpi"><b id="kpi_courses">6 Courses</b><div class="muted" id="kpi_courses_label">Core tracks</div></div>
+            <div class="kpi"><b id="kpi_lab">Interactive Lab</b><div class="muted" id="kpi_lab_label">Run code live</div></div>
+            <div class="kpi"><b id="kpi_fast">Ultra Fast</b><div class="muted" id="kpi_fast_label">Optimized UI</div></div>
+            <div class="kpi"><b id="kpi_secure">Admin Gate</b><div class="muted" id="kpi_secure_label">Quality control</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px" id="courses_title">Courses</h2>
+        <p class="muted" id="courses_desc">Mark lessons complete to earn points & certificates.</p>
+        <div class="list" id="course_list"></div>
+      </div>
+    </section>
+
+    <!-- LAB -->
+    <section class="section" id="lab">
+      <div class="container">
+        <h2 style="margin:0 0 8px" id="lab_title">Interactive AI Lab (JS)</h2>
+        <p class="muted" id="lab_desc">Try mini AI/Math demos in your browser — nothing to install.</p>
+        <div class="lab">
+          <div class="card">
+            <div style="display:flex; gap:8px; margin-bottom:8px">
+              <select id="exampleSelect"></select>
+              <button class="btn secondary" id="runExample">Run Example</button>
+            </div>
+            <textarea id="editor" rows="14" class="mono">// Write JavaScript here. Try: linearRegressionDemo()</textarea>
+            <div style="display:flex; gap:8px; margin-top:8px">
+              <button class="btn" id="runBtn">Run</button>
+              <button class="btn secondary" id="clearBtn">Clear</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="muted" style="margin-bottom:6px">Console</div>
+            <pre id="output" class="mono" style="min-height:300px; white-space:pre-wrap"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 id="about_title">About Musafiri AI Academy</h2>
+        <p class="muted" id="about_desc">
+          Founded by <b>Nayituriki Musafiri Heritier</b>, this academy brings AI education to everyone. Practical, bilingual, and community-driven.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container card">
+        <h2 id="contact_title">Contact & Support</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" href="https://wa.me/250737530409" target="_blank" id="contact_whatsapp">WhatsApp</a>
+          <a class="btn secondary" href="mailto:Musafiriofficials@gmail.com" id="contact_email">Email</a>
+          <button class="btn secondary" id="toggleChat">AI Assistant</button>
+        </div>
+        <div id="chatBox" class="card hidden" style="margin-top:10px">
+          <div id="chatLog" style="max-height:200px; overflow:auto; padding:6px"></div>
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <input id="chatInput" placeholder="Ask about lessons..." />
+            <button class="btn" id="chatSend">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="section" id="dashboard">
+      <div class="container">
+        <h2 id="dash_title">Dashboard</h2>
+        <div id="gate">
+          <p class="muted" id="dash_hint">Admin or approved users only. Login with email.</p>
+          <input id="login_email" type="email" placeholder="Email" />
+          <button class="btn" id="login_btn">Login</button>
+        </div>
+        <div id="student" class="hidden">
+          <div class="card">
+            <h3 id="stud_welcome">Welcome, Student</h3>
+            <p class="muted" id="stud_msg">Track your progress and download your certificate when done.</p>
+            <div><b id="stud_points">Points: 0</b></div>
+            <button class="btn secondary" id="downloadCert">Download Certificate</button>
+            <button class="btn" id="logout_btn">Logout</button>
+          </div>
+        </div>
+        <div id="admin" class="hidden">
+          <div class="card">
+            <h3>Admin Panel</h3>
+            <p class="muted">Approve requests, manage users & courses.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+              <div class="card">
+                <h4>Pending Access Requests</h4>
+                <div id="pendingList"></div>
+              </div>
+              <div class="card">
+                <h4>Approved Users</h4>
+                <div id="approvedList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Musafiri AI Academy · <span class="muted">Kinyarwanda • English</span>
+  </footer>
+
+<script>
+/* ================== i18n (RW/EN) ================== */
+const i18n = {
+  en: {
+    hero_pill: "Bilingual • Fast • Practical",
+    hero_title: "Master AI, Robotics & Coding — in Kinyarwanda & English",
+    hero_desc: "Step-by-step courses with interactive labs, progress tracking, and certificates. Admin-gated access for quality control.",
+    cta_start: "Start Learning",
+    cta_lab: "Open AI Lab",
+    join_title: "Request Access (Admin approval)",
+    join_hint: "Admin Email",
+    kpi_courses: "6 Courses",
+    kpi_courses_label: "Core tracks",
+    kpi_lab: "Interactive Lab",
+    kpi_lab_label: "Run code live",
+    kpi_fast: "Ultra Fast",
+    kpi_fast_label: "Optimized UI",
+    kpi_secure: "Admin Gate",
+    kpi_secure_label: "Quality control",
+    courses_title: "Courses",
+    courses_desc: "Mark lessons complete to earn points & certificates.",
+    lab_title: "Interactive AI Lab (JS)",
+    lab_desc: "Try mini AI/Math demos in your browser — nothing to install.",
+    about_title: "About Musafiri AI Academy",
+    about_desc: "Founded by Nayituriki Musafiri Heritier, this academy brings AI education to everyone. Practical, bilingual, and community-driven.",
+    contact_title: "Contact & Support",
+    contact_whatsapp: "WhatsApp",
+    contact_email: "Email",
+    dash_title: "Dashboard",
+    dash_hint: "Admin or approved users only. Login with email.",
+    stud_welcome: "Welcome, Student",
+    stud_msg: "Track your progress and download your certificate when done."
+  },
+  rw: {
+    hero_pill: "Indimi ebyiri • Byihuse • Ngiro",
+    hero_title: "Umenye AI, Robotics & Coding — mu Kinyarwanda no mu Cyongereza",
+    hero_desc: "Amasomo ateye imbere, Laboratwari ikora live, kugenzura aho ugeze no Certificat. Kwemerezwa n’Admin kugira ngo ireme ribungabungwe.",
+    cta_start: "Tangira Kwiga",
+    cta_lab: "Fungura AI Lab",
+    join_title: "Saba Uruhushya (Kwemezwa n’Admin)",
+    join_hint: "Email y’Admin",
+    kpi_courses: "Amasomo 6",
+    kpi_courses_label: "Ibyiciro by’ingenzi",
+    kpi_lab: "Laboratwari ikora",
+    kpi_lab_label: "Koresha code live",
+    kpi_fast: "Byihuta cyane",
+    kpi_fast_label: "Imigaragarire yihuse",
+    kpi_secure: "Kwemererwa n’Admin",
+    kpi_secure_label: "Ireme ry’amasomo",
+    courses_title: "Amasomo",
+    courses_desc: "Shyira ku musozo amasomo kugira ngo ubone amanota na certificat.",
+    lab_title: "AI Lab (JS)",
+    lab_desc: "Gerageza udushushanyo twa AI/Imibare muri browser — nta cyo ushyiraho.",
+    about_title: "Ibyerekeye Musafiri AI Academy",
+    about_desc: "Yatangijwe na Nayituriki Musafiri Heritier, Academy izana ubumenyi bwa AI kuri bose. Ngiro, indimi ebyiri, kandi ishingiye ku muryango.",
+    contact_title: "Twandikire & Ubufasha",
+    contact_whatsapp: "WhatsApp",
+    contact_email: "Email",
+    dash_title: "Dashboard",
+    dash_hint: "Abemejwe n’Admin gusa. Injira ukoresheje email.",
+    stud_welcome: "Murakaza neza, Munyeshuri",
+    stud_msg: "Kurikira aho ugeze kandi ukureho certificat umaze kurangiza."
+  }
+};
+
+let lang = localStorage.getItem("lang") || "en";
+function applyLang(){
+  const t = i18n[lang];
+  const IDS = ["hero_pill","hero_title","hero_desc","cta_start","cta_lab","join_title",
+  "kpi_courses","kpi_courses_label","kpi_lab","kpi_lab_label","kpi_fast","kpi_fast_label",
+  "kpi_secure","kpi_secure_label","courses_title","courses_desc","lab_title","lab_desc",
+  "about_title","about_desc","contact_title","contact_whatsapp","contact_email","dash_title",
+  "dash_hint","stud_welcome","stud_msg"];
+  IDS.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=t[id]; });
+  document.getElementById("join_hint").innerHTML = (lang==="en" ? "Admin Email: <b>Musafiriofficials@gmail.com</b> • WhatsApp: " : "Email y’Admin: <b>Musafiriofficials@gmail.com</b> • WhatsApp: ") + `<a target="_blank" href="https://wa.me/250737530409">+250737530409</a>`;
+  document.getElementById("langToggle").textContent = (lang==="en" ? "Kinyarwanda" : "English");
+}
+document.getElementById("langToggle").addEventListener("click", ()=>{
+  lang = (lang==="en" ? "rw" : "en"); localStorage.setItem("lang",lang); applyLang();
+});
+
+/* ================== theme ================== */
+let theme = localStorage.getItem("theme") || "dark";
+function applyTheme(){ document.documentElement.setAttribute("data-theme", theme==="light"?"light":"dark"); }
+applyTheme();
+document.getElementById("themeToggle").addEventListener("click", ()=>{
+  theme = (theme==="light"?"dark":"light"); localStorage.setItem("theme", theme); applyTheme();
+});
+
+/* ================== year ================== */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ================== courses & progress ================== */
+const courses = [
+  { id:"ai101", title:"Intro to AI", lessons: ["What is AI?","History & Ethics","AI vs ML vs DL","Real-world apps"] },
+  { id:"pyai", title:"Python for AI", lessons: ["Python basics","Numpy arrays","Data processing","Plotting"] },
+  { id:"ml101", title:"Machine Learning Basics", lessons: ["Supervised/Unsupervised","Train/Test split","Overfitting","Evaluation"] },
+  { id:"robo", title:"Robotics Basics", lessons: ["Sensors & Actuators","Microcontrollers","Kinematics","Path planning"] },
+  { id:"sec", title:"Cybersecurity Basics", lessons: ["Threats & Risks","Passwords & 2FA","Safe browsing","Backups"] },
+  { id:"chatbot", title:"Build a Chatbot", lessons: ["Intents & Entities","Dialog flow","APIs","Deployment"] },
+];
+const progress = JSON.parse(localStorage.getItem("progress")||"{}");
+const points = JSON.parse(localStorage.getItem("points")||"0");
+let totalPoints = Number(points)||0;
+
+function renderCourses(){
+  const wrap = document.getElementById("course_list");
+  wrap.innerHTML = "";
+  courses.forEach(c=>{
+    const key = progress[c.id] || [];
+    const pct = Math.round( (key.length / c.lessons.length) * 100 );
+    const div = document.createElement("div");
+    div.className = "course";
+    div.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <b>${c.title}</b>
+        <span class="pill">${pct}%</span>
+      </div>
+      <div class="progress"><div class="bar" style="width:${pct}%"></div></div>
+      <div style="display:grid; gap:6px; margin-top:8px">
+        ${c.lessons.map((l,i)=>{
+          const ch = key.includes(i) ? 'checked' : '';
+          return `<label style="display:flex; gap:8px; align-items:center">
+            <input type="checkbox" data-cid="${c.id}" data-idx="${i}" ${ch}/> ${l}
+          </label>`;
+        }).join("")}
+      </div>
+      <div style="display:flex; gap:8px; margin-top:10px">
+        <button class="btn secondary" data-cert="${c.id}">Get Certificate</button>
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+    cb.addEventListener("change", (e)=>{
+      const cid = e.target.getAttribute("data-cid");
+      const i = Number(e.target.getAttribute("data-idx"));
+      const arr = progress[cid] || [];
+      if(e.target.checked && !arr.includes(i)){ arr.push(i); totalPoints += 5; }
+      if(!e.target.checked){ const ix = arr.indexOf(i); if(ix>=0) arr.splice(ix,1); totalPoints = Math.max(0, totalPoints-5); }
+      progress[cid] = arr; localStorage.setItem("progress", JSON.stringify(progress));
+      localStorage.setItem("points", JSON.stringify(totalPoints));
+      document.getElementById("stud_points").textContent = "Points: " + totalPoints;
+      renderCourses();
+    });
+  });
+  document.querySelectorAll('button[data-cert]').forEach(btn=>{
+    btn.addEventListener("click", ()=> downloadCertificate(btn.getAttribute("data-cert")));
+  });
+}
+renderCourses();
+
+/* ================== simple certificate generator ================== */
+function downloadCertificate(courseId){
+  const course = courses.find(c=>c.id===courseId);
+  const done = progress[courseId]||[];
+  if(done.length !== course.lessons.length){ alert("Complete all lessons first."); return; }
+  const email = localStorage.getItem("currentUser")||"Student";
+  const cnv = document.createElement("canvas");
+  cnv.width = 1400; cnv.height = 900;
+  const ctx = cnv.getContext("2d");
+  ctx.fillStyle = "#0f1224"; ctx.fillRect(0,0,1400,900);
+  // frame
+  ctx.strokeStyle="#22d3ee"; ctx.lineWidth=8; ctx.strokeRect(30,30,1340,840);
+  // title
+  ctx.fillStyle="#ffffff"; ctx.font="bold 64px ui-sans-serif"; ctx.fillText("Certificate of Completion", 280, 200);
+  ctx.font="28px ui-sans-serif"; ctx.fillText("This certifies that", 580, 280);
+  ctx.font="bold 44px ui-sans-serif"; ctx.fillText(email, 520, 340);
+  ctx.font="28px ui-sans-serif"; ctx.fillText("has successfully completed the course", 470, 400);
+  ctx.font="bold 40px ui-sans-serif"; ctx.fillText(course.title, 520, 460);
+  ctx.font="24px ui-sans-serif"; ctx.fillText("Musafiri AI Academy", 580, 520);
+  ctx.font="20px ui-sans-serif"; ctx.fillText(new Date().toDateString(), 620, 560);
+  const link = document.createElement("a");
+  link.download = `certificate_${course.id}.png`;
+  link.href = cnv.toDataURL("image/png");
+  link.click();
+}
+
+/* ================== AI Lab (JS) ================== */
+const examples = [
+  {name:"Linear Regression (gradient descent)", code:`function linearRegressionDemo(){
+  // y = 2x + 1 (noisy)
+  const xs = [], ys = [];
+  for(let x=0; x<=10; x++){ xs.push(x); ys.push(2*x + 1 + (Math.random()-0.5)); }
+  let m=0, b=0, lr=0.01;
+  for(let epoch=0; epoch<800; epoch++){
+    let dm=0, db=0;
+    for(let i=0;i<xs.length;i++){
+      const x=xs[i], y=ys[i];
+      const pred = m*x + b;
+      dm += (pred - y) * x;
+      db += (pred - y);
+    }
+    m -= lr * dm / xs.length;
+    b -= lr * db / xs.length;
+  }
+  return {m,b}; // ~2 and ~1
+}
+console.log(linearRegressionDemo());`},
+  {name:"Perceptron XOR (demo logic)", code:`function xor(a,b){return (!!a)!=(!!b)}
+console.log('XOR truth table:');
+console.log(0,0, xor(0,0));
+console.log(0,1, xor(0,1));
+console.log(1,0, xor(1,0));
+console.log(1,1, xor(1,1));`},
+  {name:"Normalize array", code:`function normalize(arr){
+  const min = Math.min(...arr), max=Math.max(...arr);
+  return arr.map(v=>(v-min)/(max-min));
+}
+console.log(normalize([3,5,10,2]));`},
+];
+const $sel = document.getElementById("exampleSelect");
+examples.forEach((e,i)=>{
+  const o=document.createElement("option"); o.value=i; o.textContent=e.name; $sel.appendChild(o);
+});
+document.getElementById("runExample").addEventListener("click", ()=>{
+  const idx = Number($sel.value)||0;
+  document.getElementById("editor").value = examples[idx].code;
+});
+
+const editor = document.getElementById("editor");
+const out = document.getElementById("output");
+function safeLog(...args){ out.textContent += args.map(a=> typeof a==="object"? JSON.stringify(a): String(a)).join(" ") + "\n"; }
+function runUserCode(){
+  out.textContent="";
+  const log = console.log;
+  console.log = (...args)=>{ safeLog(...args); };
+  try{
+    // eslint-disable-next-line no-eval
+    eval(editor.value);
+  }catch(e){
+    safeLog("ERROR:", e.message||e);
+  }finally{
+    console.log = log;
+  }
+}
+document.getElementById("runBtn").addEventListener("click", runUserCode);
+document.getElementById("clearBtn").addEventListener("click", ()=>{ out.textContent=""; });
+
+/* ================== Access requests & Admin ================== */
+const ADMIN = "Musafiriofficials@gmail.com";
+document.getElementById("req_btn").addEventListener("click", ()=>{
+  const email = (document.getElementById("req_email").value||"").trim();
+  if(!email.includes("@")){ alert("Enter a valid email"); return; }
+  const pending = JSON.parse(localStorage.getItem("pending")||"[]");
+  if(!pending.includes(email)) pending.push(email);
+  localStorage.setItem("pending", JSON.stringify(pending));
+  alert("Request submitted. Admin will approve you soon.");
+});
+
+function renderAdmin(){
+  const pending = JSON.parse(localStorage.getItem("pending")||"[]");
+  const approved = JSON.parse(localStorage.getItem("approved")||"[]");
+  const p = document.getElementById("pendingList");
+  const a = document.getElementById("approvedList");
+  p.innerHTML = ""; a.innerHTML = "";
+  pending.forEach(em=>{
+    const div=document.createElement("div"); div.className="card";
+    div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center">
+      <span>${em}</span>
+      <div style="display:flex; gap:8px">
+        <button class="btn" data-approve="${em}">Approve</button>
+        <button class="btn secondary" data-reject="${em}">Reject</button>
+      </div>
+    </div>`;
+    p.appendChild(div);
+  });
+  approved.forEach(em=>{
+    const div=document.createElement("div"); div.className="card";
+    div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center">
+      <span>${em}</span>
+      <button class="btn secondary" data-remove="${em}">Remove</button>
+    </div>`;
+    a.appendChild(div);
+  });
+  p.querySelectorAll("button[data-approve]").forEach(b=> b.addEventListener("click", ()=> approve(b.getAttribute("data-approve"))));
+  p.querySelectorAll("button[data-reject]").forEach(b=> b.addEventListener("click", ()=> rejectReq(b.getAttribute("data-reject"))));
+  a.querySelectorAll("button[data-remove]").forEach(b=> b.addEventListener("click", ()=> removeApproved(b.getAttribute("data-remove"))));
+}
+function approve(email){
+  const pending = JSON.parse(localStorage.getItem("pending")||"[]");
+  const approved = JSON.parse(localStorage.getItem("approved")||"[]");
+  const i = pending.indexOf(email); if(i>=0) pending.splice(i,1);
+  if(!approved.includes(email)) approved.push(email);
+  localStorage.setItem("pending", JSON.stringify(pending));
+  localStorage.setItem("approved", JSON.stringify(approved));
+  renderAdmin();
+}
+function rejectReq(email){
+  const pending = JSON.parse(localStorage.getItem("pending")||"[]");
+  const i = pending.indexOf(email); if(i>=0) pending.splice(i,1);
+  localStorage.setItem("pending", JSON.stringify(pending));
+  renderAdmin();
+}
+function removeApproved(email){
+  const approved = JSON.parse(localStorage.getItem("approved")||"[]");
+  const i = approved.indexOf(email); if(i>=0) approved.splice(i,1);
+  localStorage.setItem("approved", JSON.stringify(approved));
+  renderAdmin();
+}
+
+document.getElementById("login_btn").addEventListener("click", ()=>{
+  const email = (document.getElementById("login_email").value||"").trim();
+  const approved = JSON.parse(localStorage.getItem("approved")||"[]");
+  if(email.toLowerCase()===ADMIN.toLowerCase()){
+    localStorage.setItem("role","admin");
+    localStorage.setItem("currentUser", email);
+    document.getElementById("gate").classList.add("hidden");
+    document.getElementById("student").classList.add("hidden");
+    document.getElementById("admin").classList.remove("hidden");
+    renderAdmin();
+  }else if(approved.includes(email)){
+    localStorage.setItem("role","student");
+    localStorage.setItem("currentUser", email);
+    document.getElementById("gate").classList.add("hidden");
+    document.getElementById("admin").classList.add("hidden");
+    document.getElementById("student").classList.remove("hidden");
+    document.getElementById("stud_points").textContent = "Points: " + (Number(localStorage.getItem("points"))||0);
+  }else{
+    alert("Not approved yet. Please request access and wait for admin.");
+  }
+});
+document.getElementById("logout_btn").addEventListener("click", ()=>{
+  localStorage.removeItem("role"); localStorage.removeItem("currentUser");
+  document.getElementById("student").classList.add("hidden");
+  document.getElementById("admin").classList.add("hidden");
+  document.getElementById("gate").classList.remove("hidden");
+});
+
+/* ================== Mini AI chat (rule-based) ================== */
+const chatPairs = [
+  [/ai|machine learning|deep learning/i, "AI stands for Artificial Intelligence. You can start with AI Basics and Python for AI."],
+  [/python/i, "Python is great for AI. Begin with variables, lists, loops, then libraries like NumPy and pandas."],
+  [/certificate|certificat/i, "Complete all lessons of a course, then click 'Get Certificate' to download it."],
+  [/whatsapp/i, "Tap the WhatsApp button to chat with the Academy: +250737530409."],
+  [/help|ufasha|ubufasha/i, "Use the Dashboard to log in. If not approved, send a request with your email first."]
+];
+function askBot(q){
+  for(const [re,ans] of chatPairs){ if(re.test(q)) return ans; }
+  return "I didn't get that. Please check the Courses or ask about AI, Python, certificates, or WhatsApp.";
+}
+const chatBox = document.getElementById("chatBox");
+document.getElementById("toggleChat").addEventListener("click", ()=> chatBox.classList.toggle("hidden"));
+document.getElementById("chatSend").addEventListener("click", ()=>{
+  const input = document.getElementById("chatInput");
+  const q = input.value.trim(); if(!q) return;
+  const log = document.getElementById("chatLog");
+  const add = (who, txt)=>{
+    const row=document.createElement("div");
+    row.innerHTML = `<div class="card" style="margin:6px 0; background:rgba(0,0,0,.25)"><b>${who}:</b> ${txt}</div>`;
+    log.appendChild(row); log.scrollTop = log.scrollHeight;
+  };
+  add("You", q);
+  setTimeout(()=> add("AI", askBot(q)), 300);
+  input.value="";
+});
+
+/* ================== initial ================== */
+applyLang();
+</script>
+</body>
+</html>
